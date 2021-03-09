@@ -1,0 +1,36 @@
+html {
+  background-color: #eeeddd;
+}
+
+body {
+  font-size: 62.5%; /* corresponds to 10px in default browser font-size */
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  flex-direction: column;
+
+  h1 {
+    font-size: 3.2rem;
+    margin-bottom: 4.4rem;
+    margin-top: 10%;
+  }
+}
+
+.Button-tertiary {
+  border: none;
+  text-decoration: underline;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
+}

@@ -1,0 +1,94 @@
+.TickerDataDisplay {
+  padding: 1.2rem 2.4rem;
+  border: 0.1rem solid #bbbbbb;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  // animate appearance - start the same size as that input
+  background-color: #fcf7f5;
+  border-radius: 0.5rem;
+  min-width: 22rem;
+  animation-name: growComponent;
+  animation-duration: 3000ms;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation-fill-mode: forwards;
+
+  .TickerDataDisplay--title {
+    animation-name: growTitle;
+    animation-duration: 1200ms;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation-fill-mode: forwards;
+    transform-origin: 0 0;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .TickerDataDisplay--content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    // starting animation value
+    opacity: 0;
+
+    animation-name: appear;
+    animation-delay: 1000ms;
+    animation-duration: 800ms;
+    animation-fill-mode: forwards;
+  }
+
+  .TickerDataDisplay--dataRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 0.4rem;
+
+    &:not(:last-child) {
+      padding-bottom: 0.4rem;
+      border-bottom: 0.1rem solid #bbbbbb;
+    }
+  }
+  .TickerDataDisplay--dataRowLabel {
+    font-size: 0.8rem;
+    color: #aaaaaa;
+  }
+  .TickerDataDisplay--dataRowValue {
+    font-size: 1.3rem;
+    color: #333333;
+  }
+}
+
+@keyframes growTitle {
+  0% {
+    transform: scale(1) translate(-1.6rem, -0.55rem);
+  }
+  50% {
+    transform: scale(1) translate(-1.6rem, -0.55rem);
+  }
+  100% {
+    transform: scale(1.8) translate(0, 0);
+  }
+}
+
+@keyframes growComponent {
+  0% {
+    max-height: 2.5rem;
+  }
+  100% {
+    max-height: 15rem;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* TODO: if I want to animate the transition back to input, I either need to do strange things to the
+ *  input, or max animations into the jsx, which is very unorganized. research best practices
+ */
