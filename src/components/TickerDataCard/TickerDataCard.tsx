@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TickerSearchInput } from "../TickerSearchInput";
+import { TickerSearchControl } from "../TickerSearchControl";
 import { TickerDataDisplay } from "../TickerDataDisplay";
 import { Card } from "../_layouts";
 import "./TickerDataCard.scss";
@@ -31,9 +31,9 @@ export function TickerDataCard(props: any) {
           </button>
         </>
       ) : (
-        <TickerSearchInput
+        <TickerSearchControl
           onTickerDataLoaded={setTickerData}
-        ></TickerSearchInput>
+        ></TickerSearchControl>
       )}
     </Card>
   );

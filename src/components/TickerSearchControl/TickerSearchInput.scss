@@ -29,27 +29,6 @@ $input-height: 2.5rem;
     border: 0.1rem solid #bbbbbb;
     background-color: #fcf7f5;
   }
-
-  /* TODO: how to manage cases in BEM */
-  .TickerSearchInput--Menu {
-    position: absolute;
-    top: calc(#{$input-height} + 0.2rem);
-    left: 0;
-    min-height: 2rem;
-    background-color: bisque;
-    width: 100%;
-
-    ul {
-      list-style-type: none;
-    }
-  }
-
-  .TickerSearchInput--MenuItem {
-    border: 0.1rem solid black;
-    width: 100%;
-    cursor: pointer;
-    /* TODO: add hover state */
-  }
 }
 
 @keyframes loader {

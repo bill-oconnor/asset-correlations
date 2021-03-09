@@ -9,7 +9,7 @@ import {
   TickerReturnsData,
 } from "../../api";
 
-import "./TextSearchInput.scss";
+import "./TickerSearchInput.scss";
 
 /**
  *
@@ -22,12 +22,12 @@ import "./TextSearchInput.scss";
  *  it is not disabled while it loads the list. it is while it loads the ticker symbol data
  */
 
-type TickerSearchInputProps = {
+type TickerSearchProps = {
   onTickerDataLoaded: (tickerData: TickerReturnsData) => void;
 };
 
 // TODO: change the name. it's confusing
-export function TickerSearchInput(props: TickerSearchInputProps) {
+export function TickerSearchControl(props: TickerSearchProps) {
   const { onTickerDataLoaded } = props;
 
   const [inputValue, setInputValue] = useState<string>("");
@@ -55,22 +55,49 @@ export function TickerSearchInput(props: TickerSearchInputProps) {
     }
   };
 
+  const tickerSearch = debounce(function () {
+    searchAutoCompleteTickers(inputValue).then((results) => {
+      /**
+       * do we still have an input value?
+       * Better would be to check a request id
+       * Even better would be to manage this such that that isn't needed
+       */
+      if (inputValue) {
+        autoCompleteTickerDataLoaded(results);
+      } else {
+        autoCompleteTickerDataLoaded([]);
+      }
+    });
+  }, 500);
+
   // TODO: are state hooks syncronous?
-  const autoCompleteTickerSearchEffect = debounce(function () {
+  const tickerSearchEffect = function () {
+    // new search, clear results
+    setAutoCompleteTickerSuggestions([]);
     if (inputValue) {
       // set loading true
       setLoading(true);
       // search with state value
-      searchAutoCompleteTickers(inputValue).then((results) => {
-        autoCompleteTickerDataLoaded(results);
-      });
-    } else {
-      autoCompleteTickerDataLoaded([]);
+      tickerSearch();
     }
-  }, 500);
+  };
+
+  const windowEventsForSearchResultsMenuEffect = () => {
+    function menuMgmtClickHandler() {
+      setAutoCompleteTickerSuggestions([]);
+    }
+    if (autoCompleteTickerSuggestions && autoCompleteTickerSuggestions.length) {
+      window.addEventListener("click", menuMgmtClickHandler);
+    } else {
+      window.removeEventListener("click", menuMgmtClickHandler);
+    }
+  };
 
   useEffect(tickerDataSelectedEffect, [selectedTickerData]);
-  useEffect(autoCompleteTickerSearchEffect, [inputValue]);
+  useEffect(tickerSearchEffect, [inputValue]);
+  useEffect(windowEventsForSearchResultsMenuEffect, [
+    autoCompleteTickerSuggestions,
+  ]);
 
   function autoCompleteTickerDataLoaded(searchResults: TickerInputData[]) {
     // update with results
@@ -95,6 +122,15 @@ export function TickerSearchInput(props: TickerSearchInputProps) {
     setInputValue(value);
   }
 
+  function inputFocused() {
+    if (
+      inputValue &&
+      (!autoCompleteTickerSuggestions || !autoCompleteTickerSuggestions.length)
+    ) {
+      tickerSearchEffect();
+    }
+  }
+
   // TODO: how to manage typescript
   const inputText = selectedTickerData ? selectedTickerData.label : inputValue;
 
@@ -105,6 +141,7 @@ export function TickerSearchInput(props: TickerSearchInputProps) {
         className="TickerSearchInput--input"
         value={inputText}
         onChange={(e) => inputValueChanged(e.target.value)}
+        onFocus={() => inputFocused()}
         placeholder="Ticker"
       />
       <TickerSearchResultsMenu

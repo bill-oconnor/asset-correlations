@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TickerSearchResult } from "./TickerSearchResult";
+import "./TickerSearchResultsMenu.scss";
 
 type TickerSearchResultsMenuProps = {
   onSelectTicker: (tickerData: any) => void;
@@ -13,7 +14,7 @@ export function TickerSearchResultsMenu(props: TickerSearchResultsMenuProps) {
   const { results, onSelectTicker } = props;
 
   return results.length === 0 ? null : (
-    <div className="TickerSearchInput--Menu">
+    <div className="TickerSearchResultsMenu">
       <ul>
         {results.map((r) => (
           <TickerSearchResult
